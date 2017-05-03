@@ -1,6 +1,8 @@
 package com.recetas.aplicacion.aplicacionrecetas.Pojo;
 
 import java.util.Date;
+
+import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 /**
@@ -18,7 +20,7 @@ public class Usuario {
     public static final String AVATAR ="avatar";
 
 
-    @DatabaseField(generatedId = true, columnName = ID)
+    @DatabaseField(generatedId = true, columnName = Usuario.ID)
     private int id;
     @DatabaseField(columnName = Usuario.NOMBRE)
     private String nombre;
@@ -29,27 +31,19 @@ public class Usuario {
     @DatabaseField(columnName = Usuario.FECHA_REGISTRO)
     private Date fechaRegistro;
     @DatabaseField(columnName = Usuario.AVATAR)
-    private byte[] avatar;
+    private String avatar;
 
 
-    public Usuario(String nombre, String telefono, String correo, Date fechaRegistro, byte[] avatar) {
+    public Usuario() {
+    }
+
+    public Usuario(String nombre, String telefono, String correo, Date fechaRegistro, String avatar) {
         this.nombre = nombre;
         this.telefono = telefono;
         this.correo = correo;
         this.fechaRegistro = fechaRegistro;
         this.avatar = avatar;
     }
-
-    public Usuario(int id, String nombre, String telefono, String correo, Date fechaRegistro, byte[] avatar) {
-        this.id = id;
-        this.nombre = nombre;
-        this.telefono = telefono;
-        this.correo = correo;
-        this.fechaRegistro = fechaRegistro;
-        this.avatar = avatar;
-    }
-
-    public Usuario() {}
 
     public int getId() {
         return id;
@@ -83,19 +77,19 @@ public class Usuario {
         this.correo = correo;
     }
 
-    public byte[] getAvatar() {
-        return avatar;
-    }
-
-    public void setAvatar(byte[] avatar) {
-        this.avatar = avatar;
-    }
-
     public Date getFechaRegistro() {
         return fechaRegistro;
     }
 
     public void setFechaRegistro(Date fechaRegistro) {
         this.fechaRegistro = fechaRegistro;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 }
