@@ -6,6 +6,7 @@ import com.j256.ormlite.table.DatabaseTable;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by anton on 02/05/2017.
@@ -37,6 +38,8 @@ public class Receta {
     @DatabaseField(columnName = Receta.USUARIO,foreign = true)
     private Usuario usuario;
 
+
+    private List<Comentario> comentarios;
 
     public Receta(String titulo, String descripcion, ArrayList<String> ingredientes, Date fechaPublicacion, String imagen, Usuario usuario) {
         this.titulo = titulo;
@@ -104,5 +107,13 @@ public class Receta {
 
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
+    }
+
+    public List<Comentario> getComentarios() {
+        return comentarios;
+    }
+
+    public void setComentarios(List<Comentario> comentarios) {
+        this.comentarios = comentarios;
     }
 }

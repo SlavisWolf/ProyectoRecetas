@@ -5,4 +5,48 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
+
+    <!-- LOGIN -->
+
+    <string name="login">Login</string>
+    <string name="mail">Email</string>
+    <string name="password">Password</string>
+    <string name="haveNotAccount">still do not you have an account? register here</string>
+
+    <string name="buttonlogin">Sig in</string>
+
+    <string name="noMail">You have not written a mail</string>
+    <string name="noPass">You have not written a password</string>
+    <string name="userDontExist">Mail or pass are wrong</string>
+    <string name="rememberPass">Remember Pass?</string>
+
+    <!-- SIGN UP -->
+
+    <string name="signIn">Sign In</string>
+    <string name="phone">Phone</string>
+    <string name="name">Name</string>
+    <string name="send">Send</string>
+    <string name="returnLogin">Return Login</string>
+    <string name="mailExits">There is an account using this mail</string>
+
+    <!-- NAVIGATION-->
+
+    <string name="navProfile">View Profile</string>
+    <string name="navOut">Sign Out</string>
+    <string name="navAccount">Your Acountt</string>
+
+    <!-- Profile-->
+
+    <string name="profileNewPass">New Pass</string>
+    <string name="profileCurrentPass">Current Pass</string>
+    <string name="profileTextView">Current pass is needed to save the changes</string>
+    <string name="profileSaveChanges">Save Changes</string>
+    <string name="titleProfile">Profile of</string>
+
+    <!-- dialogoImagenes -->
+
+    <string name="tituloDialogoImagenes">Choose a image</string>
+    <string name="camera">Camera</string>
+    <string name="galery">Galery</string>
+    <string name="cancel">Cancel</string>
 </resources>

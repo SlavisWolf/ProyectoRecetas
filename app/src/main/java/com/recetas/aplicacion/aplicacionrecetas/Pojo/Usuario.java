@@ -1,5 +1,8 @@
 package com.recetas.aplicacion.aplicacionrecetas.Pojo;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.Date;
 
 import com.j256.ormlite.field.DataType;
@@ -9,7 +12,7 @@ import com.j256.ormlite.table.DatabaseTable;
  * Created by anton on 01/05/2017.
  */
 @DatabaseTable
-public class Usuario {
+public class Usuario implements Parcelable{
 
     //COLUMNAS
     public static final String ID ="_id";
@@ -18,6 +21,7 @@ public class Usuario {
     public static final String CORREO ="correo";
     public static final String FECHA_REGISTRO ="fechaRegistro";
     public static final String AVATAR ="avatar";
+    public static final String PASS ="pass";
 
 
     @DatabaseField(generatedId = true, columnName = Usuario.ID)
@@ -26,8 +30,10 @@ public class Usuario {
     private String nombre;
     @DatabaseField(columnName = Usuario.TELEFONO)
     private String telefono;
-    @DatabaseField(columnName = Usuario.CORREO)
-    private String correo;
+    @DatabaseField(columnName = Usuario.CORREO, unique = true,canBeNull = false)
+    private String correo; // login
+    @DatabaseField(columnName = Usuario.PASS)
+    private String pass; // login
     @DatabaseField(columnName = Usuario.FECHA_REGISTRO)
     private Date fechaRegistro;
     @DatabaseField(columnName = Usuario.AVATAR)
@@ -37,13 +43,19 @@ public class Usuario {
     public Usuario() {
     }
 
-    public Usuario(String nombre, String telefono, String correo, Date fechaRegistro, String avatar) {
+    public Usuario(String nombre, String telefono, String correo, String pass, Date fechaRegistro, String avatar) {
         this.nombre = nombre;
         this.telefono = telefono;
         this.correo = correo;
+        this.pass = pass;
         this.fechaRegistro = fechaRegistro;
         this.avatar = avatar;
     }
+
+    public Usuario(String nombre, String telefono, String correo, String pass, Date fechaRegistro) {
+        this(nombre,telefono,correo,pass,fechaRegistro,"");
+    }
+
 
     public int getId() {
         return id;
@@ -92,4 +104,51 @@ public class Usuario {
     public void setAvatar(String avatar) {
         this.avatar = avatar;
     }
+
+    public String getPass() {
+        return pass;
+    }
+
+    public void setPass(String pass) {
+        this.pass = pass;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
+        dest.writeString(nombre);
+        dest.writeString(telefono);
+        dest.writeString(correo);
+        dest.writeString(pass);
+        dest.writeLong(fechaRegistro.getTime() );
+        dest.writeString(avatar);
+    }
+
+    protected Usuario(Parcel in) {
+        id = in.readInt();
+        nombre = in.readString();
+        telefono = in.readString();
+        correo = in.readString();
+        pass = in.readString();
+        fechaRegistro =  new Date(in.readLong());
+        avatar = in.readString();
+    }
+
+    public static final Creator<Usuario> CREATOR = new Creator<Usuario>() {
+        @Override
+        public Usuario createFromParcel(Parcel in) {
+            return new Usuario(in);
+        }
+
+        @Override
+        public Usuario[] newArray(int size) {
+            return new Usuario[size];
+        }
+    };
+
 }

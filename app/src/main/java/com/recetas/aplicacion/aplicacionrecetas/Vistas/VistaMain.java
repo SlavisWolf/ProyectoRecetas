@@ -1,6 +1,8 @@
 package com.recetas.aplicacion.aplicacionrecetas.Vistas;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -23,9 +25,11 @@ import android.widget.ImageView;
 
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.j256.ormlite.dao.Dao;
+import com.recetas.aplicacion.aplicacionrecetas.App.AplicacionRecetas;
 import com.recetas.aplicacion.aplicacionrecetas.BD.Ayudante;
 import com.recetas.aplicacion.aplicacionrecetas.Pojo.Receta;
 import com.recetas.aplicacion.aplicacionrecetas.Pojo.Usuario;
+import com.recetas.aplicacion.aplicacionrecetas.Presentadores.PresentadorMain;
 import com.recetas.aplicacion.aplicacionrecetas.R;
 
 import java.io.ByteArrayOutputStream;
@@ -39,33 +43,30 @@ public class VistaMain extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private static final  int GALERY_ACTIVITY = 10;
-
+    private  Usuario usuario;
+    private PresentadorMain presentador;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vista_main);
 
-        System.out.println("Hola");
-        Log.d("Hola","Funkaaa");
-        try {
-            Dao usuarioDao = OpenHelperManager.getHelper(this, Ayudante.class).getUsuarioDao();
-            Usuario user = new Usuario("nombre","telefono","correo",new Date(),"imagen");
-            usuarioDao.create(user);
-            System.out.println("En teoría usuario insertado");
-            /*Usuario usu= (Usuario) usuarioDao.queryForId(1);
-            Dao recetaDao = OpenHelperManager.getHelper(this, Ayudante.class).getRecetaDao();
 
-            Receta rec = (Receta) recetaDao.queryForId(1);
+        presentador = new PresentadorMain(this);
 
-            System.out.println(rec.getTitulo() +" " +rec.getDescripcion() +" " +rec.getIngredientes().get(1));
-            ArrayList<String> lista = new ArrayList<>();
-            lista.add("Hola");
-            lista.add("Adios");
-            Receta rec = new Receta("titulo","descripcion",lista,new Date(),usu);
-            recetaDao.create(rec);*/
-        } catch (SQLException e) {
-            e.printStackTrace();
+        if (savedInstanceState != null) {
+            usuario = savedInstanceState.getParcelable("usuario");
+        } else {
+            Bundle b = getIntent().getExtras();
+            if (b != null) {
+                usuario = b.getParcelable("usuario");
+            }
+            else {
+                SharedPreferences prefs =  getSharedPreferences(AplicacionRecetas.preferencias, Context.MODE_PRIVATE);
+                usuario = leerUsuarioPreferencias(prefs.getInt("usuario",0) );
+            }
         }
+
+
 
         Button actualizar = (Button) findViewById(R.id.actu);
         Button galeria = (Button) findViewById(R.id.galeria);
@@ -147,10 +148,10 @@ public class VistaMain extends AppCompatActivity
 
         } else if (id == R.id.nav_manage) {
 
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
+        } else if (id == R.id.nav_profile) {
+            irPerfil();
+        } else if (id == R.id.nav_sign_out) {
+            desconectarUsuario();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -160,5 +161,28 @@ public class VistaMain extends AppCompatActivity
 
 
 
+
+    private void desconectarUsuario() {
+        SharedPreferences prefs =  getSharedPreferences(AplicacionRecetas.preferencias, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putInt("usuario", 0 ) ;
+        editor.commit();
+
+        Intent activityLogin = new Intent( this , VistaLogin.class);
+        startActivity(activityLogin);
+        finish();
+    }
+
+    private void  irPerfil() {
+        Intent activityMain = new Intent(getApplicationContext(), VistaPerfil.class);
+        Bundle b = new Bundle();
+        b.putParcelable("usuario",usuario);
+        activityMain.putExtras(b);
+        startActivity(activityMain);
+    }
+
+    private Usuario  leerUsuarioPreferencias(int id) {
+        return presentador.leerUsuarioPreferencias(id);
+    }
 }
 

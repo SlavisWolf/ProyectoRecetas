@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginBottom="30dp"
+    android:layout_marginLeft="20dp"
+    android:layout_marginRight="20dp"
+    android:layout_marginTop="140dp"
+    android:orientation="vertical">
+
+
+    <TextView
+        android:id="@+id/loginTv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:accessibilityTraversalAfter="@+id/si"
+        android:text="@string/login"
+        android:textAlignment="center"
+        android:textSize="30sp" />
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/usernameInputLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/usernameEt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:imeOptions="actionNext"
+            android:inputType="textEmailAddress"
+            android:hint="@string/mail" />
+    </android.support.design.widget.TextInputLayout>
+
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/passwordInputLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/passwordEt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:imeOptions="actionDone"
+            android:inputType="textPassword"
+            android:hint="@string/password" />
+    </android.support.design.widget.TextInputLayout>
+
+
+    <Button
+        android:id="@+id/loginBt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="10dp"
+        android:text="@string/buttonlogin" />
+
+
+    <CheckBox
+        android:id="@+id/rememberPass"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:checked="true"
+        android:text="@string/rememberPass"
+        android:textSize="12sp" />
+
+    <Button
+        android:id="@+id/registerBt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:background="@android:color/transparent"
+        android:text="@string/haveNotAccount"
+        android:textColor="@android:color/holo_blue_dark"
+        android:textSize="10sp" />
+
+
+</LinearLayout>
