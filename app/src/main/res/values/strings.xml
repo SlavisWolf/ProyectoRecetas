@@ -43,10 +43,19 @@
     <string name="profileSaveChanges">Save Changes</string>
     <string name="titleProfile">Profile of</string>
 
+    <string name="mailUsed">That mail account is used by another user</string>
+    <string name="passRequired">Write your current pass to save the changes</string>
+
     <!-- dialogoImagenes -->
 
     <string name="tituloDialogoImagenes">Choose a image</string>
     <string name="camera">Camera</string>
     <string name="galery">Galery</string>
     <string name="cancel">Cancel</string>
+
+    <!-- Recetas -->
+    <string name="opinionLabel">Do you like this recipe ?</string>
+    <string name="title">Title</string>
+    <string name="description">Description</string>
+    <string name="save">Save</string>
 </resources>

@@ -10,6 +10,8 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -22,11 +24,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.j256.ormlite.dao.Dao;
+import com.recetas.aplicacion.aplicacionrecetas.Adaptadores.AdaptadorReceta;
 import com.recetas.aplicacion.aplicacionrecetas.App.AplicacionRecetas;
+import com.recetas.aplicacion.aplicacionrecetas.App.ArchivosRecetas;
 import com.recetas.aplicacion.aplicacionrecetas.BD.Ayudante;
+import com.recetas.aplicacion.aplicacionrecetas.BD.Repositorios.RepositorioUsuarios;
 import com.recetas.aplicacion.aplicacionrecetas.Pojo.Receta;
 import com.recetas.aplicacion.aplicacionrecetas.Pojo.Usuario;
 import com.recetas.aplicacion.aplicacionrecetas.Presentadores.PresentadorMain;
@@ -39,12 +45,16 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class VistaMain extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private static final  int GALERY_ACTIVITY = 10;
     private  Usuario usuario;
     private PresentadorMain presentador;
+    private RecyclerView rv;
+    AdaptadorReceta adaptador;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,6 +62,20 @@ public class VistaMain extends AppCompatActivity
 
 
         presentador = new PresentadorMain(this);
+
+        rv = (RecyclerView) findViewById(R.id.recetasRecyclerView);
+        rv.setHasFixedSize(false); // true, la lista es estatica, false, los datos de la lista pueden variar.
+        rv.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)); // forma en que se visualizan los elementos, en este caso en vertical.
+
+        adaptador = new AdaptadorReceta();
+        adaptador.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        rv.setAdapter(adaptador);
 
         if (savedInstanceState != null) {
             usuario = savedInstanceState.getParcelable("usuario");
@@ -66,19 +90,7 @@ public class VistaMain extends AppCompatActivity
             }
         }
 
-
-
-        Button actualizar = (Button) findViewById(R.id.actu);
-        Button galeria = (Button) findViewById(R.id.galeria);
-        galeria.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent galleryIntent = new Intent(Intent.ACTION_GET_CONTENT);
-                galleryIntent.setType("image/*");
-                startActivityForResult(galleryIntent, GALERY_ACTIVITY);
-            }
-        });
-
+        AplicacionRecetas.ID_CURRENT_USER = usuario.getId();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -100,6 +112,7 @@ public class VistaMain extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        iniciarValoresNavHeader();
     }
 
     @Override
@@ -183,6 +196,31 @@ public class VistaMain extends AppCompatActivity
 
     private Usuario  leerUsuarioPreferencias(int id) {
         return presentador.leerUsuarioPreferencias(id);
+    }
+
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        RepositorioUsuarios userRepo = new RepositorioUsuarios(OpenHelperManager.getHelper(this, Ayudante.class));
+        usuario = userRepo.leerUsuarioId(AplicacionRecetas.ID_CURRENT_USER);
+        iniciarValoresNavHeader();
+    }
+
+
+    private  void  iniciarValoresNavHeader() {
+        NavigationView nav = (NavigationView) findViewById(R.id.nav_view); // los ids no estan en quip, sino dentro del header del navigation.
+        View header = nav.getHeaderView(0); // 0 es porque es el primero, si estuviera el 2º en el layout seria el 1
+        TextView nombreTv = (TextView) header.findViewById(R.id.nav_usuario);
+        nombreTv.setText(usuario.getNombre());
+        TextView correoTv = (TextView) header.findViewById(R.id.nav_correo);
+        correoTv.setText(usuario.getCorreo());
+        CircleImageView avatarIv = (CircleImageView) header.findViewById(R.id.nav_avatar);
+        if (usuario.getAvatar() != null && !usuario.getAvatar().isEmpty()) {
+            avatarIv.setImageBitmap(BitmapFactory.decodeFile(usuario.getAvatar()));
+        } else {
+            avatarIv.setImageDrawable(getResources().getDrawable(R.drawable.ic_no_avatar));
+        }
     }
 }
 

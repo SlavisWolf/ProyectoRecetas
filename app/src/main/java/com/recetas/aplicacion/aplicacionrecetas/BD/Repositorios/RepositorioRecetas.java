@@ -79,4 +79,24 @@ public class RepositorioRecetas {
             e.printStackTrace();
         }
     }
+
+    public long numeroLikesReceta(Receta receta) {
+        QueryBuilder queryValoracion = valoracionDao.queryBuilder();
+        try {
+            return queryValoracion.where().eq(Valoracion.RECETA,receta).and().eq(Valoracion.RICO,Valoracion.ME_GUSTA).countOf();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+    public long numeroDislikesReceta(Receta receta) {
+        QueryBuilder queryValoracion = valoracionDao.queryBuilder();
+        try {
+            return queryValoracion.where().eq(Valoracion.RECETA,receta).and().eq(Valoracion.RICO,Valoracion.NO_ME_GUSTA).countOf();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
 }
