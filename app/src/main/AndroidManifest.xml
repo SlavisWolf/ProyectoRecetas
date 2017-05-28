@@ -21,7 +21,6 @@
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -33,9 +32,23 @@
         </activity>
 
         <activity android:name=".Vistas.VistaRegistro"
-                  android:label="@string/app_name"/>
+                  android:parentActivityName=".Vistas.VistaLogin"
+                  android:label="@string/app_name">
+        </activity>
 
-        <activity android:name=".Vistas.VistaPerfil"/>
+        <activity android:name=".Vistas.VistaPerfil"
+            android:parentActivityName=".Vistas.VistaLogin">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".Vistas.VistaLogin" />
+            </activity>
+
+        <activity android:name=".Vistas.VistaEdicionReceta"
+            android:parentActivityName=".Vistas.VistaMain">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".Vistas.VistaMain" />
+        </activity>
     </application>
 
 </manifest>

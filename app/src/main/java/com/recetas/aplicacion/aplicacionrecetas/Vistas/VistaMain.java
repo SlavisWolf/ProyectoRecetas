@@ -3,16 +3,16 @@ package com.recetas.aplicacion.aplicacionrecetas.Vistas;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
+
 import android.graphics.BitmapFactory;
-import android.net.Uri;
+
 import android.os.Bundle;
-import android.provider.MediaStore;
+
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -22,15 +22,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.j256.ormlite.android.apptools.OpenHelperManager;
-import com.j256.ormlite.dao.Dao;
+
 import com.recetas.aplicacion.aplicacionrecetas.Adaptadores.AdaptadorReceta;
 import com.recetas.aplicacion.aplicacionrecetas.App.AplicacionRecetas;
-import com.recetas.aplicacion.aplicacionrecetas.App.ArchivosRecetas;
+
 import com.recetas.aplicacion.aplicacionrecetas.BD.Ayudante;
 import com.recetas.aplicacion.aplicacionrecetas.BD.Repositorios.RepositorioUsuarios;
 import com.recetas.aplicacion.aplicacionrecetas.Pojo.Receta;
@@ -38,11 +36,7 @@ import com.recetas.aplicacion.aplicacionrecetas.Pojo.Usuario;
 import com.recetas.aplicacion.aplicacionrecetas.Presentadores.PresentadorMain;
 import com.recetas.aplicacion.aplicacionrecetas.R;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Date;
+
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -51,10 +45,10 @@ public class VistaMain extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private static final  int GALERY_ACTIVITY = 10;
-    private  Usuario usuario;
+    private Usuario usuario;
     private PresentadorMain presentador;
     private RecyclerView rv;
-    AdaptadorReceta adaptador;
+    private AdaptadorReceta adaptador;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,15 +61,6 @@ public class VistaMain extends AppCompatActivity
         rv.setHasFixedSize(false); // true, la lista es estatica, false, los datos de la lista pueden variar.
         rv.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)); // forma en que se visualizan los elementos, en este caso en vertical.
 
-        adaptador = new AdaptadorReceta();
-        adaptador.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-
-        rv.setAdapter(adaptador);
 
         if (savedInstanceState != null) {
             usuario = savedInstanceState.getParcelable("usuario");
@@ -90,6 +75,16 @@ public class VistaMain extends AppCompatActivity
             }
         }
 
+        List<Receta> lista = presentador.getRecetasUsuario(usuario.getId());
+
+        for (Receta receta : lista) {
+            System.out.println(receta.getId() + " " + receta.getTitulo() + "  usuario:" + usuario.getFechaRegistro() );
+        }
+        adaptador = new AdaptadorReceta(presentador.getRecetasUsuario( usuario.getId() ) );
+        adaptador.setOnClickListener(new EdicionRecetaListener() );
+
+        rv.setAdapter(adaptador);
+
         AplicacionRecetas.ID_CURRENT_USER = usuario.getId();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -99,8 +94,7 @@ public class VistaMain extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                botonNuevo();
             }
         });
 
@@ -222,5 +216,27 @@ public class VistaMain extends AppCompatActivity
             avatarIv.setImageDrawable(getResources().getDrawable(R.drawable.ic_no_avatar));
         }
     }
+
+
+    private void botonNuevo() {
+        Intent activity = new Intent(getApplicationContext(), VistaEdicionReceta.class);
+        startActivity(activity);
+    }
+
+    public class EdicionRecetaListener implements View.OnClickListener {
+
+        @Override
+        public void onClick(View v) {
+
+            System.out.println("PROBANDO");
+            int pos = rv.getChildAdapterPosition(v);
+            Intent activity = new Intent(getApplicationContext(), VistaEdicionReceta.class);
+            Bundle b = new Bundle();
+            b.putParcelable("receta",adaptador.getReceta(pos) );
+            activity.putExtras(b);
+            startActivity(activity);
+        }
+    }
+
 }
 

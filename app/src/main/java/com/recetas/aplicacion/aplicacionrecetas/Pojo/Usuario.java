@@ -125,6 +125,7 @@ public class Usuario implements Parcelable{
         dest.writeString(telefono);
         dest.writeString(correo);
         dest.writeString(pass);
+        System.out.println(fechaRegistro);
         dest.writeLong(fechaRegistro.getTime() );
         dest.writeString(avatar);
     }

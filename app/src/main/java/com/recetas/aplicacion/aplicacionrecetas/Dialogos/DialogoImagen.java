@@ -58,7 +58,6 @@ public class DialogoImagen extends DialogFragment implements View.OnClickListene
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-
         getDialog().setTitle(getResources().getString(R.string.tituloDialogoImagenes));
         View v = inflater.inflate(R.layout.dialogo_imagenes,null);
         Button botonCamara = (Button) v.findViewById(R.id.dialogCamera);
@@ -77,16 +76,12 @@ public class DialogoImagen extends DialogFragment implements View.OnClickListene
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-
         try {
             listener = (imagenDialogListener) context;
-
-
         } catch (ClassCastException e) {
             throw new ClassCastException(
                     context.toString() +
                             " no implementó imagenDialogListener");
-
         }
     }
 
@@ -94,10 +89,10 @@ public class DialogoImagen extends DialogFragment implements View.OnClickListene
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            /*case R.id.dialogCamera:
+            case R.id.dialogCamera:
                 listener.imagenDialogCamara();
                 dismiss();
-                break;*/
+                break;
             case R.id.dialogCancel:
                 dismiss();
                 break;

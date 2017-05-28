@@ -4,9 +4,12 @@ import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.recetas.aplicacion.aplicacionrecetas.BD.Ayudante;
 import com.recetas.aplicacion.aplicacionrecetas.BD.Repositorios.RepositorioRecetas;
 import com.recetas.aplicacion.aplicacionrecetas.BD.Repositorios.RepositorioUsuarios;
+import com.recetas.aplicacion.aplicacionrecetas.Pojo.Receta;
 import com.recetas.aplicacion.aplicacionrecetas.Pojo.Usuario;
 import com.recetas.aplicacion.aplicacionrecetas.Presentadores.PresentadorMain;
 import com.recetas.aplicacion.aplicacionrecetas.Vistas.VistaMain;
+
+import java.util.List;
 
 /**
  * Created by anton on 08/05/2017.
@@ -26,5 +29,13 @@ public class ModeloMain {
 
     public Usuario leerUsuarioId(int id) {
        return repositorioUsuarios.leerUsuarioId(id);
+    }
+
+    public List<Receta> getRecetasDeUsuario(int id) {
+        return repositorioRecetas.leerRecetasUsuario(repositorioUsuarios.leerUsuarioId(id));
+    }
+
+    public List<Receta> getRecetasDeOtrosUsuarios(int id) {
+        return repositorioRecetas.leerRecetasDistintasUsuario(repositorioUsuarios.leerUsuarioId(id));
     }
 }

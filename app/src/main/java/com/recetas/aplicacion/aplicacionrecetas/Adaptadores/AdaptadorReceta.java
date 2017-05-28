@@ -36,6 +36,7 @@ public class AdaptadorReceta extends RecyclerView.Adapter<AdaptadorReceta.ViewHo
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflador = LayoutInflater.from(parent.getContext());
         View vista = inflador.inflate(R.layout.item_recetas,parent,false);
+        vista.setOnClickListener(this);
         return new ViewHolder(vista);
     }
 
@@ -70,6 +71,10 @@ public class AdaptadorReceta extends RecyclerView.Adapter<AdaptadorReceta.ViewHo
     }
 
 
+
+    public  Receta getReceta(int position) {
+        return lista.get(position);
+    }
     public List<Receta> getLista() {
         return lista;
     }

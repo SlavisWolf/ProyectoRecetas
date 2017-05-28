@@ -58,4 +58,14 @@
     <string name="title">Title</string>
     <string name="description">Description</string>
     <string name="save">Save</string>
+
+
+    <!--EdicionReceta-->
+
+    <string name="isRequired">is required</string>
+    <string name="image">Image</string>
+
+    <!-- Receta  -->
+    <string name="likeRecipe">Do you like this recipe?</string>
+
 </resources>

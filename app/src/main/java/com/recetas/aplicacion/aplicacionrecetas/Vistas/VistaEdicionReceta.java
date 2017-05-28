@@ -15,13 +15,16 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.MultiAutoCompleteTextView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.recetas.aplicacion.aplicacionrecetas.App.AplicacionRecetas;
 import com.recetas.aplicacion.aplicacionrecetas.App.ArchivosRecetas;
+import com.recetas.aplicacion.aplicacionrecetas.BD.Repositorios.RepositorioUsuarios;
 import com.recetas.aplicacion.aplicacionrecetas.Dialogos.DialogoImagen;
 import com.recetas.aplicacion.aplicacionrecetas.Dialogos.Interfaces.imagenDialogListener;
 import com.recetas.aplicacion.aplicacionrecetas.Pojo.Receta;
@@ -30,6 +33,7 @@ import com.recetas.aplicacion.aplicacionrecetas.R;
 
 import java.io.File;
 import java.lang.ref.WeakReference;
+import java.util.Date;
 
 import static com.recetas.aplicacion.aplicacionrecetas.App.AplicacionRecetas.REQUEST_IMAGE_CAPTURE;
 
@@ -50,6 +54,7 @@ public class VistaEdicionReceta extends AppCompatActivity implements imagenDialo
     private TextView contadorDislikes;
     private Receta receta;
     private PresentadorEdicionreceta presentador;
+    private Button guardarBt;
 
 
 
@@ -57,6 +62,7 @@ public class VistaEdicionReceta extends AppCompatActivity implements imagenDialo
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_recetas_editing);
 
         inicializarVariables();
         presentador = new PresentadorEdicionreceta(this);
@@ -72,24 +78,28 @@ public class VistaEdicionReceta extends AppCompatActivity implements imagenDialo
             }
         }
 
+        receta.setUsuario(presentador.obtenerUsuarioActual() );
+
         if (receta.getId() != 0) // nueva receta
             asignarValoresReceta();
 
-
         asignarEventoOnClickImagen();
     }
-
-
-
-
-
-
     private void inicializarVariables() {
+        guardarBt = (Button) findViewById(R.id.guardarReceta);
         tituloEt = (EditText) findViewById(R.id.tituloRecetaEditText);
         descripcionEt = (MultiAutoCompleteTextView) findViewById(R.id.editTextDescriptionRecipe);
         imagenRecetaIv = (ImageView) findViewById(R.id.imagenRecetaEdicion);
         contadorLikes = (TextView) findViewById(R.id.likeCountLabel);
         contadorDislikes = (TextView) findViewById(R.id.dislikeCountLabel);
+
+        guardarBt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                guardarNota();
+                finish();
+            }
+        });
     }
 
     private void asignarValoresReceta() {
@@ -213,5 +223,41 @@ public class VistaEdicionReceta extends AppCompatActivity implements imagenDialo
                 }
             }
         }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        guardarNota();
+    }
+
+    private void guardarNota() {
+
+            String error = "";
+
+            if (receta.getImagen() == null || receta.getImagen().isEmpty())
+                error += getResources().getString(R.string.image) +" ";
+            String titulo = tituloEt.getText().toString();
+            if (titulo.isEmpty())
+                error += getResources().getString(R.string.title) +" ";
+            String descripcion = descripcionEt.getText().toString();
+            if (descripcion.isEmpty() )
+                error += getResources().getString(R.string.description) +" ";
+
+
+            if (error.isEmpty() ) { // guardamos la nota
+                receta.setTitulo(titulo);
+                receta.setDescripcion(descripcion);
+                if (receta.getId() != 0) { // actualizamos
+
+                    presentador.actualizarReceta(receta);
+                } else {
+                    receta.setFechaPublicacion(new Date());
+                    presentador.crearReceta(receta);
+                }
+            }
+            else {
+                Toast.makeText(this,error + " " +  getResources().getString(R.string.isRequired),Toast.LENGTH_LONG).show();
+            }
     }
 }

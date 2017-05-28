@@ -31,7 +31,7 @@ public class RepositorioRecetas {
         }
     }
 
-    public List<Receta> leeRecetas() {
+    public List<Receta> leerRecetas() {
         try {
             QueryBuilder query  = recetaDao.queryBuilder();
             query.orderBy(Receta.FECHA_PUBLICACION,false); // descendente
@@ -64,6 +64,46 @@ public class RepositorioRecetas {
         return null;
     }
 
+    public List<Receta> leerRecetasUsuario(Usuario u) {
+        try {
+            QueryBuilder query  = recetaDao.queryBuilder();
+            query.where().eq(Receta.USUARIO,u);
+            query.orderBy(Receta.FECHA_PUBLICACION,false); // descendente
+            List<Receta> recetas = query.query();
+
+            for (Receta r : recetas) { // le asignamos los comentarios a las recetas
+                QueryBuilder queryComentarios = comentarioDao.queryBuilder();
+                queryComentarios.where().eq(Comentario.RECETA,r);
+                List<Comentario> comentarios = queryComentarios.query();
+                r.setComentarios(comentarios);
+            }
+            return recetas;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public List<Receta> leerRecetasDistintasUsuario(Usuario u) {
+        try {
+            QueryBuilder query  = recetaDao.queryBuilder();
+            query.where().not().eq(Receta.USUARIO,u);
+            query.orderBy(Receta.FECHA_PUBLICACION,false); // descendente
+            List<Receta> recetas = query.query();
+
+            for (Receta r : recetas) { // le asignamos los comentarios a las recetas
+                QueryBuilder queryComentarios = comentarioDao.queryBuilder();
+                queryComentarios.where().eq(Comentario.RECETA,r);
+                List<Comentario> comentarios = queryComentarios.query();
+                r.setComentarios(comentarios);
+            }
+            return recetas;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public void crearReceta(Receta rec) {
         try {
             recetaDao.create(rec);
@@ -72,7 +112,7 @@ public class RepositorioRecetas {
         }
     }
 
-    public  void actualizarUsuario(Receta rec) {
+    public  void actualizarReceta(Receta rec) {
         try {
             recetaDao.update(rec);
         } catch (SQLException e) {

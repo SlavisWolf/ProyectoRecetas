@@ -25,9 +25,9 @@
 
     <MultiAutoCompleteTextView
         android:id="@+id/editTextDescriptionRecipe"
-        android:hint="@string/description"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:hint="@string/description" />
 
   <!--  <TextView
         android:id="@+id/textView"

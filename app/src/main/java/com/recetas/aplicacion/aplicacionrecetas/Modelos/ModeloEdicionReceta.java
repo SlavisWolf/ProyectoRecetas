@@ -1,9 +1,11 @@
 package com.recetas.aplicacion.aplicacionrecetas.Modelos;
 
+import com.recetas.aplicacion.aplicacionrecetas.App.AplicacionRecetas;
 import com.recetas.aplicacion.aplicacionrecetas.BD.Ayudante;
 import com.recetas.aplicacion.aplicacionrecetas.BD.Repositorios.RepositorioRecetas;
 import com.recetas.aplicacion.aplicacionrecetas.BD.Repositorios.RepositorioUsuarios;
 import com.recetas.aplicacion.aplicacionrecetas.Pojo.Receta;
+import com.recetas.aplicacion.aplicacionrecetas.Pojo.Usuario;
 import com.recetas.aplicacion.aplicacionrecetas.Presentadores.PresentadorEdicionreceta;
 
 /**
@@ -28,5 +30,17 @@ public class ModeloEdicionReceta {
 
     public long numeroDislikesReceta(Receta r) {
         return  repositorioRecetas.numeroDislikesReceta(r);
+    }
+
+    public Usuario obtenerUsuarioActual()  {
+        return repositorioUsuarios.leerUsuarioId(AplicacionRecetas.ID_CURRENT_USER);
+    }
+
+    public void  actualizarReceta(Receta r) {
+        repositorioRecetas.actualizarReceta(r);
+    }
+
+    public void  crearReceta(Receta r) {
+        repositorioRecetas.crearReceta(r);
     }
 }
