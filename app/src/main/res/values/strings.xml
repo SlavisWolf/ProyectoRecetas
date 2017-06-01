@@ -34,6 +34,8 @@
     <string name="navProfile">View Profile</string>
     <string name="navOut">Sign Out</string>
     <string name="navAccount">Your Acountt</string>
+    <string name="ownRecipes">Own Recipes</string>
+    <string name="otherRecipes">Recipes of other users</string>
 
     <!-- Profile-->
 

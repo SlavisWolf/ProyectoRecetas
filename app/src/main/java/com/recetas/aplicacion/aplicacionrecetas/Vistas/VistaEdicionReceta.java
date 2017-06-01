@@ -28,6 +28,7 @@ import com.recetas.aplicacion.aplicacionrecetas.BD.Repositorios.RepositorioUsuar
 import com.recetas.aplicacion.aplicacionrecetas.Dialogos.DialogoImagen;
 import com.recetas.aplicacion.aplicacionrecetas.Dialogos.Interfaces.imagenDialogListener;
 import com.recetas.aplicacion.aplicacionrecetas.Pojo.Receta;
+import com.recetas.aplicacion.aplicacionrecetas.Pojo.Usuario;
 import com.recetas.aplicacion.aplicacionrecetas.Presentadores.PresentadorEdicionreceta;
 import com.recetas.aplicacion.aplicacionrecetas.R;
 
@@ -234,7 +235,6 @@ public class VistaEdicionReceta extends AppCompatActivity implements imagenDialo
     private void guardarNota() {
 
             String error = "";
-
             if (receta.getImagen() == null || receta.getImagen().isEmpty())
                 error += getResources().getString(R.string.image) +" ";
             String titulo = tituloEt.getText().toString();
@@ -248,6 +248,7 @@ public class VistaEdicionReceta extends AppCompatActivity implements imagenDialo
             if (error.isEmpty() ) { // guardamos la nota
                 receta.setTitulo(titulo);
                 receta.setDescripcion(descripcion);
+                //System.out.println("Prueba edicion:" + receta.getUsuario().getCorreo());
                 if (receta.getId() != 0) { // actualizamos
 
                     presentador.actualizarReceta(receta);

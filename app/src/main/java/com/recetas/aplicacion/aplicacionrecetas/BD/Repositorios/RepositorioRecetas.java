@@ -20,12 +20,14 @@ public class RepositorioRecetas {
     private Dao<Receta, Integer> recetaDao;
     private Dao<Comentario, Integer> comentarioDao;
     private Dao<Valoracion, Integer> valoracionDao;
+    private Dao<Usuario, Integer> usuarioDao;
 
     public RepositorioRecetas(Ayudante ayudante) {
         try {
             this.recetaDao = ayudante.getRecetaDao();
             this.comentarioDao = ayudante.getComentarioDao();
             this.valoracionDao = ayudante.getValoracionDao();
+            this.usuarioDao = ayudante.getUsuarioDao();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -42,6 +44,7 @@ public class RepositorioRecetas {
                 queryComentarios.where().eq(Comentario.RECETA,r);
                 List<Comentario> comentarios = queryComentarios.query();
                 r.setComentarios(comentarios);
+                r.setUsuario(usuarioDao.queryForId(r.getUsuario().getId()));
             }
             return recetas;
         } catch (SQLException e) {
@@ -57,6 +60,7 @@ public class RepositorioRecetas {
             queryComentarios.where().eq(Comentario.RECETA,resultado);
             List<Comentario> comentarios = queryComentarios.query();
             resultado.setComentarios(comentarios);
+            resultado.setUsuario(usuarioDao.queryForId(resultado.getUsuario().getId()));
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -76,6 +80,7 @@ public class RepositorioRecetas {
                 queryComentarios.where().eq(Comentario.RECETA,r);
                 List<Comentario> comentarios = queryComentarios.query();
                 r.setComentarios(comentarios);
+                r.setUsuario(usuarioDao.queryForId(r.getUsuario().getId()));
             }
             return recetas;
         } catch (SQLException e) {
@@ -96,6 +101,7 @@ public class RepositorioRecetas {
                 queryComentarios.where().eq(Comentario.RECETA,r);
                 List<Comentario> comentarios = queryComentarios.query();
                 r.setComentarios(comentarios);
+                r.setUsuario(usuarioDao.queryForId(r.getUsuario().getId()));
             }
             return recetas;
         } catch (SQLException e) {
@@ -137,6 +143,32 @@ public class RepositorioRecetas {
         } catch (SQLException e) {
             e.printStackTrace();
             return 0;
+        }
+    }
+
+    public Valoracion obtenerValoracionRecetaConUsuario(Receta r , Usuario u) {
+        QueryBuilder query  = valoracionDao.queryBuilder();
+        try {
+            return (Valoracion) query.where().eq(Valoracion.RECETA , r).and().eq(Valoracion.USUARIO , u).queryForFirst();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public void crearValoracion(Valoracion v) {
+        try {
+            valoracionDao.create(v);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void actualizarValoracion(Valoracion v) {
+        try {
+            valoracionDao.update(v);
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 }

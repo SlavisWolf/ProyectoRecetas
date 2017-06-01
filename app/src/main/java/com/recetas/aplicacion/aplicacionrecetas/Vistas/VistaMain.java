@@ -31,14 +31,9 @@ import com.recetas.aplicacion.aplicacionrecetas.App.AplicacionRecetas;
 
 import com.recetas.aplicacion.aplicacionrecetas.BD.Ayudante;
 import com.recetas.aplicacion.aplicacionrecetas.BD.Repositorios.RepositorioUsuarios;
-import com.recetas.aplicacion.aplicacionrecetas.Pojo.Receta;
 import com.recetas.aplicacion.aplicacionrecetas.Pojo.Usuario;
 import com.recetas.aplicacion.aplicacionrecetas.Presentadores.PresentadorMain;
 import com.recetas.aplicacion.aplicacionrecetas.R;
-
-
-import java.util.List;
-
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class VistaMain extends AppCompatActivity
@@ -75,11 +70,11 @@ public class VistaMain extends AppCompatActivity
             }
         }
 
-        List<Receta> lista = presentador.getRecetasUsuario(usuario.getId());
+       /* List<Receta> lista = presentador.getRecetasUsuario(usuario.getId());
 
         for (Receta receta : lista) {
-            System.out.println(receta.getId() + " " + receta.getTitulo() + "  usuario:" + usuario.getFechaRegistro() );
-        }
+            System.out.println(receta.getId() + " " + receta.getTitulo() + "  usuario prueba:" + receta.getUsuario().getCorreo() );
+        }*/
         adaptador = new AdaptadorReceta(presentador.getRecetasUsuario( usuario.getId() ) );
         adaptador.setOnClickListener(new EdicionRecetaListener() );
 
@@ -166,9 +161,6 @@ public class VistaMain extends AppCompatActivity
         return true;
     }
 
-
-
-
     private void desconectarUsuario() {
         SharedPreferences prefs =  getSharedPreferences(AplicacionRecetas.preferencias, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
@@ -199,6 +191,9 @@ public class VistaMain extends AppCompatActivity
         RepositorioUsuarios userRepo = new RepositorioUsuarios(OpenHelperManager.getHelper(this, Ayudante.class));
         usuario = userRepo.leerUsuarioId(AplicacionRecetas.ID_CURRENT_USER);
         iniciarValoresNavHeader();
+
+        adaptador.setLista(presentador.getRecetasUsuario(usuario.getId()));
+        adaptador.notifyDataSetChanged();
     }
 
 
@@ -230,7 +225,7 @@ public class VistaMain extends AppCompatActivity
 
             System.out.println("PROBANDO");
             int pos = rv.getChildAdapterPosition(v);
-            Intent activity = new Intent(getApplicationContext(), VistaEdicionReceta.class);
+            Intent activity = new Intent(getApplicationContext(), VistaReceta.class);
             Bundle b = new Bundle();
             b.putParcelable("receta",adaptador.getReceta(pos) );
             activity.putExtras(b);
