@@ -117,6 +117,7 @@ public class VistaLogin extends AppCompatActivity {
                     guardarIdUsuarioPrefs(user);
                 }
 
+                System.out.println(" AQUIII " +user.getId() + " " + user.getCorreo() + " " + user.getFechaRegistro() + " " + user.getNombre());
                 Intent activityMain = new Intent(getApplicationContext(), VistaMain.class);
                 Bundle b = new Bundle();
                 b.putParcelable("usuario",user);

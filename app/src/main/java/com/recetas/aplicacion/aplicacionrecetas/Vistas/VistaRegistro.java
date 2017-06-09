@@ -98,6 +98,7 @@ public class VistaRegistro extends AppCompatActivity {
                 Toast.makeText(this,getResources().getString(R.string.mailExits),Toast.LENGTH_LONG).show();
             else {
 
+                System.out.println("PRUEBA REGISTRO" + usuario.getFechaRegistro());
                 repositorio.crearUsuario(usuario);
                 irLogin();
                 finish();

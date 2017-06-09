@@ -69,5 +69,11 @@
 
     <!-- Receta  -->
     <string name="likeRecipe">Do you like this recipe?</string>
+    <string name="comments">Comments:</string>
 
+    <!--Comments -->
+
+    <string name="tituloDialogoComentarios">New Comment</string>
+    <string name="hintDialogoComentarios">Write your comment here...</string>
+    <string name="comment">Comment</string>
 </resources>

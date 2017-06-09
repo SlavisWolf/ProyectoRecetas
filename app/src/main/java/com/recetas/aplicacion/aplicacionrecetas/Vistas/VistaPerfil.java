@@ -1,7 +1,7 @@
 package com.recetas.aplicacion.aplicacionrecetas.Vistas;
 
 import android.Manifest;
-import android.app.Dialog;
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -53,8 +53,6 @@ public class VistaPerfil extends AppCompatActivity implements imagenDialogListen
     TextInputEditText currentPassEt;
     Button saveBt;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -96,7 +94,9 @@ public class VistaPerfil extends AppCompatActivity implements imagenDialogListen
     private void  asignarDatosUsuario() {
         nombreEt.setText(usuario.getNombre());
         correoEt.setText(usuario.getCorreo());
-        telefonoEt.setText(usuario.getTelefono());
+        if (usuario.getTelefono()!= null)
+            telefonoEt.setText(usuario.getTelefono());
+        if (usuario.getNombre()!= null)
         setTitle(getResources().getString(R.string.titleProfile) + " " + usuario.getNombre());
         if (usuario.getAvatar() != null && !usuario.getAvatar().isEmpty()) {
             ArchivosRecetas.asignarImagenAImageViewPorRuta(avatarIv,usuario.getAvatar());

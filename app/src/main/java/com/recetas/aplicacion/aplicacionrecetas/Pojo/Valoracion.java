@@ -9,6 +9,7 @@ import com.j256.ormlite.table.DatabaseTable;
 public class Valoracion {
 
     //COLUMNAS
+    public static final String ID ="_id";
     public static final String RECETA ="receta";
     public static final String USUARIO ="usuario";
     public static final String RICO ="rico";
@@ -20,6 +21,8 @@ public class Valoracion {
     public static final int NO_ME_GUSTA = 1;
     public static final int NADA = 0;
 
+    @DatabaseField(generatedId = true, columnName = Valoracion.ID)
+    private int id;
     // Con uniqueCombo conseguimos que  la combinacion de los 2 valores sea única, lo que vendria siendo una clave primaria
     @DatabaseField(columnName = Valoracion.RECETA,foreign = true ,uniqueCombo = true,canBeNull = false)
     private Receta receta;
@@ -64,5 +67,13 @@ public class Valoracion {
 
     public void setRico(int rico) {
         this.rico = rico;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

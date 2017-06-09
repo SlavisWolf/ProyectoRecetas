@@ -18,5 +18,6 @@ public class AplicacionRecetas {
     public static final int REQUEST_IMAGE_CAPTURE = 20;
     public static final int REQUEST_GALERY = 21;
 
-    public static int ID_CURRENT_USER;
+    public static int ID_CURRENT_USER = 0;
+    public static int CURRENT_RECIPES = 100;
 }

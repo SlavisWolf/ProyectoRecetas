@@ -38,7 +38,7 @@ public class ArchivosRecetas {
 
             FileOutputStream file = new FileOutputStream(ruta);
 
-            bmp.compress(Bitmap.CompressFormat.JPEG, 50, file);
+            bmp.compress(Bitmap.CompressFormat.JPEG, 80, file);
             MediaScannerConnection.scanFile(c,new String[]{file_imagen.toString()},null,
                     new MediaScannerConnection.OnScanCompletedListener() {
                         public void onScanCompleted(String path, Uri uri) {

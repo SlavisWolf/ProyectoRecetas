@@ -136,6 +136,7 @@ public class Usuario implements Parcelable{
         telefono = in.readString();
         correo = in.readString();
         pass = in.readString();
+        fechaRegistro = new Date(in.readLong());
         avatar = in.readString();
     }
 

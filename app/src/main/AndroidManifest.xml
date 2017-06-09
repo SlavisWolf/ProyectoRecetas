@@ -49,6 +49,13 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".Vistas.VistaMain" />
         </activity>
+
+        <activity android:name=".Vistas.VistaReceta"
+            android:parentActivityName=".Vistas.VistaMain">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".Vistas.VistaMain" />
+        </activity>
     </application>
 
 </manifest>

@@ -30,10 +30,15 @@ import com.recetas.aplicacion.aplicacionrecetas.Adaptadores.AdaptadorReceta;
 import com.recetas.aplicacion.aplicacionrecetas.App.AplicacionRecetas;
 
 import com.recetas.aplicacion.aplicacionrecetas.BD.Ayudante;
+import com.recetas.aplicacion.aplicacionrecetas.BD.Repositorios.RepositorioRecetas;
 import com.recetas.aplicacion.aplicacionrecetas.BD.Repositorios.RepositorioUsuarios;
+import com.recetas.aplicacion.aplicacionrecetas.Pojo.Receta;
 import com.recetas.aplicacion.aplicacionrecetas.Pojo.Usuario;
 import com.recetas.aplicacion.aplicacionrecetas.Presentadores.PresentadorMain;
 import com.recetas.aplicacion.aplicacionrecetas.R;
+
+import java.util.List;
+
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class VistaMain extends AppCompatActivity
@@ -44,6 +49,11 @@ public class VistaMain extends AppCompatActivity
     private PresentadorMain presentador;
     private RecyclerView rv;
     private AdaptadorReceta adaptador;
+
+
+    private static  int OWN_RECIPES = 100;
+    private static  int OTHER_RECIPES = 200;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,23 +74,25 @@ public class VistaMain extends AppCompatActivity
             if (b != null) {
                 usuario = b.getParcelable("usuario");
             }
+            else if (AplicacionRecetas.ID_CURRENT_USER != 0){
+                usuario = leerUsuarioPreferencias(AplicacionRecetas.ID_CURRENT_USER);
+            }
+
             else {
                 SharedPreferences prefs =  getSharedPreferences(AplicacionRecetas.preferencias, Context.MODE_PRIVATE);
                 usuario = leerUsuarioPreferencias(prefs.getInt("usuario",0) );
             }
         }
 
-       /* List<Receta> lista = presentador.getRecetasUsuario(usuario.getId());
+        AplicacionRecetas.ID_CURRENT_USER = usuario.getId();
 
-        for (Receta receta : lista) {
-            System.out.println(receta.getId() + " " + receta.getTitulo() + "  usuario prueba:" + receta.getUsuario().getCorreo() );
-        }*/
-        adaptador = new AdaptadorReceta(presentador.getRecetasUsuario( usuario.getId() ) );
+        Ayudante a = OpenHelperManager.getHelper(this,Ayudante.class);
+        RepositorioRecetas  bd = new RepositorioRecetas(a);
+
+        adaptador = new AdaptadorReceta(obtenerListaRecycler() , bd);
         adaptador.setOnClickListener(new EdicionRecetaListener() );
 
         rv.setAdapter(adaptador);
-
-        AplicacionRecetas.ID_CURRENT_USER = usuario.getId();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -142,15 +154,14 @@ public class VistaMain extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_profile) {
+        if (id == R.id.nav_own_recipes) {
+            AplicacionRecetas.CURRENT_RECIPES = VistaMain.OWN_RECIPES;
+            cambiarListaAdaptador();
+        } else if (id == R.id.nav_other_recipes) {
+            AplicacionRecetas.CURRENT_RECIPES = VistaMain.OTHER_RECIPES;
+            cambiarListaAdaptador();
+        }
+        else if (id == R.id.nav_profile) {
             irPerfil();
         } else if (id == R.id.nav_sign_out) {
             desconectarUsuario();
@@ -186,16 +197,16 @@ public class VistaMain extends AppCompatActivity
 
 
     @Override
-    protected void onRestart() {
-        super.onRestart();
+    protected void onStart() {
+        super.onStart();
+        System.out.println("Codigo : " + AplicacionRecetas.CURRENT_RECIPES);
         RepositorioUsuarios userRepo = new RepositorioUsuarios(OpenHelperManager.getHelper(this, Ayudante.class));
-        usuario = userRepo.leerUsuarioId(AplicacionRecetas.ID_CURRENT_USER);
+
+        usuario =  presentador.leerUsuarioPreferencias(AplicacionRecetas.ID_CURRENT_USER);
         iniciarValoresNavHeader();
 
-        adaptador.setLista(presentador.getRecetasUsuario(usuario.getId()));
-        adaptador.notifyDataSetChanged();
+        cambiarListaAdaptador();
     }
-
 
     private  void  iniciarValoresNavHeader() {
         NavigationView nav = (NavigationView) findViewById(R.id.nav_view); // los ids no estan en quip, sino dentro del header del navigation.
@@ -218,12 +229,53 @@ public class VistaMain extends AppCompatActivity
         startActivity(activity);
     }
 
+
+
+    private List<Receta> obtenerListaRecycler() {
+        NavigationView nav = (NavigationView) findViewById(R.id.nav_view); // los ids no estan en quip, sino dentro del header del navigation.
+        Menu menu =nav.getMenu();
+        if (AplicacionRecetas.CURRENT_RECIPES == VistaMain.OWN_RECIPES) {
+            return presentador.getRecetasUsuario(AplicacionRecetas.ID_CURRENT_USER);
+        }
+        else {
+            return presentador.getRecetasOtrosUsuarios(AplicacionRecetas.ID_CURRENT_USER);
+        }
+    }
+
+    private void cambiarListaAdaptador () {
+        adaptador.setLista(obtenerListaRecycler());
+
+        if (AplicacionRecetas.CURRENT_RECIPES == VistaMain.OWN_RECIPES) {
+            adaptador.setOnClickListener(new EdicionRecetaListener());
+        }
+        else
+            adaptador.setOnClickListener(new VistaRecetaListener());
+        adaptador.notifyDataSetChanged();
+
+    }
+
+
+
+
     public class EdicionRecetaListener implements View.OnClickListener {
 
         @Override
         public void onClick(View v) {
 
-            System.out.println("PROBANDO");
+            int pos = rv.getChildAdapterPosition(v);
+            Intent activity = new Intent(getApplicationContext(), VistaEdicionReceta.class);
+            Bundle b = new Bundle();
+            b.putParcelable("receta",adaptador.getReceta(pos) );
+            activity.putExtras(b);
+            startActivity(activity);
+        }
+    }
+
+    public class VistaRecetaListener implements View.OnClickListener {
+
+        @Override
+        public void onClick(View v) {
+
             int pos = rv.getChildAdapterPosition(v);
             Intent activity = new Intent(getApplicationContext(), VistaReceta.class);
             Bundle b = new Bundle();
@@ -232,6 +284,5 @@ public class VistaMain extends AppCompatActivity
             startActivity(activity);
         }
     }
-
 }
 

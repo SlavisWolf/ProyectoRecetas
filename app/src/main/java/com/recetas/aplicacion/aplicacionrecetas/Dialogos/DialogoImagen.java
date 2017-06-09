@@ -58,7 +58,6 @@ public class DialogoImagen extends DialogFragment implements View.OnClickListene
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        getDialog().setTitle(getResources().getString(R.string.tituloDialogoImagenes));
         View v = inflater.inflate(R.layout.dialogo_imagenes,null);
         Button botonCamara = (Button) v.findViewById(R.id.dialogCamera);
         botonCamara.setOnClickListener(this);

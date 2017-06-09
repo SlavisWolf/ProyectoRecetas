@@ -9,6 +9,7 @@ import com.recetas.aplicacion.aplicacionrecetas.Pojo.Usuario;
 import com.recetas.aplicacion.aplicacionrecetas.Pojo.Valoracion;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -76,10 +77,6 @@ public class RepositorioRecetas {
             List<Receta> recetas = query.query();
 
             for (Receta r : recetas) { // le asignamos los comentarios a las recetas
-                QueryBuilder queryComentarios = comentarioDao.queryBuilder();
-                queryComentarios.where().eq(Comentario.RECETA,r);
-                List<Comentario> comentarios = queryComentarios.query();
-                r.setComentarios(comentarios);
                 r.setUsuario(usuarioDao.queryForId(r.getUsuario().getId()));
             }
             return recetas;
@@ -97,10 +94,6 @@ public class RepositorioRecetas {
             List<Receta> recetas = query.query();
 
             for (Receta r : recetas) { // le asignamos los comentarios a las recetas
-                QueryBuilder queryComentarios = comentarioDao.queryBuilder();
-                queryComentarios.where().eq(Comentario.RECETA,r);
-                List<Comentario> comentarios = queryComentarios.query();
-                r.setComentarios(comentarios);
                 r.setUsuario(usuarioDao.queryForId(r.getUsuario().getId()));
             }
             return recetas;
@@ -169,6 +162,32 @@ public class RepositorioRecetas {
             valoracionDao.update(v);
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+    }
+
+    public void crearComentario(Comentario c) {
+        try {
+            comentarioDao.create(c);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public List<Comentario> leerComentariosReceta(Receta r) {
+
+        try {
+            QueryBuilder query  = comentarioDao.queryBuilder();
+            query.where().eq(Comentario.RECETA,r);
+            List<Comentario> comentarios = query.query();
+
+            for (Comentario c : comentarios ) {
+                c.setUsuario(usuarioDao.queryForId(c.getUsuario().getId() ) );
+            }
+
+            return comentarios;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return new ArrayList<Comentario>();
         }
     }
 }
