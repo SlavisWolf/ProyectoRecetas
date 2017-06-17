@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">AplicacionRecetas</string>
+    <string name="app_name">Mum´s Recipes</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -76,4 +76,11 @@
     <string name="tituloDialogoComentarios">New Comment</string>
     <string name="hintDialogoComentarios">Write your comment here...</string>
     <string name="comment">Comment</string>
+
+    <string name="acept">Accept</string>
+
+    <!-- Dialogo borrar-->
+
+    <string name="tituloBorrarReceta">Remove Recipe</string>
+    <string name="textoBorrarReceta">do you want delete this recipe?</string>
 </resources>

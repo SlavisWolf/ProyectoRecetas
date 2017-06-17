@@ -4,9 +4,12 @@ import com.recetas.aplicacion.aplicacionrecetas.App.AplicacionRecetas;
 import com.recetas.aplicacion.aplicacionrecetas.BD.Ayudante;
 import com.recetas.aplicacion.aplicacionrecetas.BD.Repositorios.RepositorioRecetas;
 import com.recetas.aplicacion.aplicacionrecetas.BD.Repositorios.RepositorioUsuarios;
+import com.recetas.aplicacion.aplicacionrecetas.Pojo.Comentario;
 import com.recetas.aplicacion.aplicacionrecetas.Pojo.Receta;
 import com.recetas.aplicacion.aplicacionrecetas.Pojo.Usuario;
 import com.recetas.aplicacion.aplicacionrecetas.Presentadores.PresentadorEdicionreceta;
+
+import java.util.List;
 
 /**
  * Created by anton on 21/05/2017.
@@ -42,5 +45,17 @@ public class ModeloEdicionReceta {
 
     public void  crearReceta(Receta r) {
         repositorioRecetas.crearReceta(r);
+    }
+
+    public void borrarReceta(Receta r) {
+        repositorioRecetas.borrarReceta(r);
+    }
+
+    public List<Comentario> leerComentariosReceta(Receta r) {
+        return repositorioRecetas.leerComentariosReceta(r);
+    }
+
+    public void crearComentario(Comentario c) {
+        repositorioRecetas.crearComentario(c);
     }
 }

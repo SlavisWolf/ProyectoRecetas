@@ -14,6 +14,10 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -22,11 +26,16 @@ import android.widget.MultiAutoCompleteTextView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.recetas.aplicacion.aplicacionrecetas.Adaptadores.AdaptadorComentarios;
 import com.recetas.aplicacion.aplicacionrecetas.App.AplicacionRecetas;
 import com.recetas.aplicacion.aplicacionrecetas.App.ArchivosRecetas;
 import com.recetas.aplicacion.aplicacionrecetas.BD.Repositorios.RepositorioUsuarios;
+import com.recetas.aplicacion.aplicacionrecetas.Dialogos.DialogoAceptarCancelar;
 import com.recetas.aplicacion.aplicacionrecetas.Dialogos.DialogoImagen;
+import com.recetas.aplicacion.aplicacionrecetas.Dialogos.DialogoNuevoComentario;
+import com.recetas.aplicacion.aplicacionrecetas.Dialogos.Interfaces.AcceptOrCancelDialogListener;
 import com.recetas.aplicacion.aplicacionrecetas.Dialogos.Interfaces.imagenDialogListener;
+import com.recetas.aplicacion.aplicacionrecetas.Pojo.Comentario;
 import com.recetas.aplicacion.aplicacionrecetas.Pojo.Receta;
 import com.recetas.aplicacion.aplicacionrecetas.Pojo.Usuario;
 import com.recetas.aplicacion.aplicacionrecetas.Presentadores.PresentadorEdicionreceta;
@@ -45,7 +54,7 @@ import static com.recetas.aplicacion.aplicacionrecetas.App.AplicacionRecetas.REQ
 //CAMBIAR NOMBRE ARCHIVOS IMAGEN RECETAS
 
 //asignar usuario a receta
-public class VistaEdicionReceta extends AppCompatActivity implements imagenDialogListener {
+public class VistaEdicionReceta extends AppCompatActivity implements imagenDialogListener,AcceptOrCancelDialogListener {
 
 
     private EditText tituloEt;
@@ -57,8 +66,10 @@ public class VistaEdicionReceta extends AppCompatActivity implements imagenDialo
     private PresentadorEdicionreceta presentador;
     private Button guardarBt;
 
+    // Comentarios
 
-
+    private AdaptadorComentarios adaptador;
+    private RecyclerView rv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,12 +90,14 @@ public class VistaEdicionReceta extends AppCompatActivity implements imagenDialo
             }
         }
 
+        receta.setComentarios(presentador.leerComentariosReceta(receta));
         receta.setUsuario(presentador.obtenerUsuarioActual() );
 
         if (receta.getId() != 0) // nueva receta
             asignarValoresReceta();
 
         asignarEventoOnClickImagen();
+        inicializarRv();
     }
     private void inicializarVariables() {
         guardarBt = (Button) findViewById(R.id.guardarReceta);
@@ -101,6 +114,18 @@ public class VistaEdicionReceta extends AppCompatActivity implements imagenDialo
                 finish();
             }
         });
+
+
+        ImageView addComentario = (ImageView) findViewById(R.id.nuevoComentario);
+        addComentario.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DialogoNuevoComentario dialogo = DialogoNuevoComentario.newInstance();
+                dialogo.show(getSupportFragmentManager() ,"Dialogo comentario");
+            }
+        });
+
+        rv = (RecyclerView) findViewById(R.id.listaComentarios);
     }
 
     private void asignarValoresReceta() {
@@ -116,6 +141,8 @@ public class VistaEdicionReceta extends AppCompatActivity implements imagenDialo
 
         contadorLikes.setText(String.valueOf(presentador.numeroLikesReceta(receta) ) );
         contadorDislikes.setText(String.valueOf(presentador.numeroDislikesReceta(receta) ) );
+
+        rv = (RecyclerView) findViewById(R.id.listaComentarios);
     }
 
     private void asignarEventoOnClickImagen() {
@@ -260,5 +287,59 @@ public class VistaEdicionReceta extends AppCompatActivity implements imagenDialo
             else {
                 Toast.makeText(this,error + " " +  getResources().getString(R.string.isRequired),Toast.LENGTH_LONG).show();
             }
+    }
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+
+        if (receta.getId() != 0)
+            getMenuInflater().inflate(R.menu.edicion_receta, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+
+        switch (item.getItemId()) {
+
+            case R.id.menu_receta_borrar : {
+
+                DialogoAceptarCancelar dialogo = DialogoAceptarCancelar.newInstance(getString(R.string.tituloBorrarReceta) , getString(R.string.textoBorrarReceta));
+                dialogo.show(getSupportFragmentManager(), "Dialogo Borrar");
+                return true;
+            }
+
+            default: {
+                return false;
+            }
+        }
+    }
+
+    @Override
+    public void onAcceptDialog(String texto) {
+
+        if (texto == null) { // dialogo borrar receta
+            presentador.borrarReceta(receta);
+            finish();
+        }
+        else { // dialogo nuevo comentario
+            Comentario c = new Comentario(receta, receta.getUsuario() , texto);
+            adaptador.nuevoComentario(c);
+            presentador.crearComentario(c);
+            receta.setComentarios(presentador.leerComentariosReceta(receta) );
+        }
+    }
+
+    @Override
+    public void onCancelDialog() {
+
+    }
+
+    private void inicializarRv() {
+        rv.setHasFixedSize(false); // true, la lista es estatica, false, los datos de la lista pueden variar.
+        rv.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)); // forma en que se visualizan los elementos, en este caso en vertical.
+        adaptador = new AdaptadorComentarios(receta.getComentarios());
+        rv.setAdapter(adaptador);
     }
 }

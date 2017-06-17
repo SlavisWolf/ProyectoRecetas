@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.recetas.aplicacion.aplicacionrecetas.App.AplicacionRecetas;
 import com.recetas.aplicacion.aplicacionrecetas.Pojo.Comentario;
 import com.recetas.aplicacion.aplicacionrecetas.Pojo.Receta;
 import com.recetas.aplicacion.aplicacionrecetas.R;
@@ -45,7 +46,11 @@ public class AdaptadorComentarios extends RecyclerView.Adapter<AdaptadorComentar
     public void onBindViewHolder(ViewHolder holder, int position) {
             Comentario comentario = lista.get(position);
             holder.getTextoComentario().setText(comentario.getTexto() );
-            holder.getAutorComentario().setText(comentario.getUsuario().getNombre() );
+
+            if (comentario.getUsuario().getId()  == AplicacionRecetas.ID_CURRENT_USER)
+                holder.getAutorComentario().setText("You");
+            else
+                holder.getAutorComentario().setText(comentario.getUsuario().getNombre() );
     }
 
     @Override

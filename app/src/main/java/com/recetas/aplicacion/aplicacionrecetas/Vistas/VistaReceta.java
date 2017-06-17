@@ -70,9 +70,6 @@ public class VistaReceta extends AppCompatActivity implements View.OnClickListen
 
         receta.setComentarios(leerComentariosReceta() );
 
-        if (receta.getComentarios().isEmpty()) {
-            System.out.println("COMENTARIOS VACIOS");
-        }
         usuario = presentador.obtenerUsuarioActual();
 
         valoracion = presentador.obtenerValoracionRecetaUsuarioActual(receta , usuario);

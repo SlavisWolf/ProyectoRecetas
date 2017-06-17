@@ -190,4 +190,12 @@ public class RepositorioRecetas {
             return new ArrayList<Comentario>();
         }
     }
+
+    public void borrarReceta(Receta rec) {
+        try {
+            recetaDao.delete(rec);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }
