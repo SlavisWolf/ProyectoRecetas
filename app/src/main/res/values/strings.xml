@@ -13,7 +13,7 @@
     <string name="password">Password</string>
     <string name="haveNotAccount">still do not you have an account? register here</string>
 
-    <string name="buttonlogin">Sig in</string>
+    <string name="buttonlogin">Sign in</string>
 
     <string name="noMail">You have not written a mail</string>
     <string name="noPass">You have not written a password</string>
@@ -22,7 +22,7 @@
 
     <!-- SIGN UP -->
 
-    <string name="signIn">Sign In</string>
+    <string name="signIn">Sign Up</string>
     <string name="phone">Phone</string>
     <string name="name">Name</string>
     <string name="send">Send</string>

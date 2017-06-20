@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.Image;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -65,6 +66,7 @@ public class VistaEdicionReceta extends AppCompatActivity implements imagenDialo
     private Receta receta;
     private PresentadorEdicionreceta presentador;
     private Button guardarBt;
+    private ImageView addComentario;
 
     // Comentarios
 
@@ -95,6 +97,24 @@ public class VistaEdicionReceta extends AppCompatActivity implements imagenDialo
 
         if (receta.getId() != 0) // nueva receta
             asignarValoresReceta();
+        else {
+            System.out.println("ID RECETA" + receta.getId());
+            if (receta.getId() < 1) {
+                contadorLikes.setVisibility(View.GONE);
+                contadorDislikes.setVisibility(View.GONE);
+                rv.setVisibility(View.GONE);
+
+                ImageView like = (ImageView) findViewById(R.id.LikeIv);
+                like.setVisibility(View.GONE);
+                ImageView dislike = (ImageView) findViewById(R.id.dislikeIv);
+                dislike.setVisibility(View.GONE);
+
+                TextView textoComentario = (TextView) findViewById(R.id.textoComentariosEditing);
+                textoComentario.setVisibility(View.GONE);
+                addComentario.setVisibility(View.GONE);
+            }
+        }
+
 
         asignarEventoOnClickImagen();
         inicializarRv();
@@ -116,7 +136,7 @@ public class VistaEdicionReceta extends AppCompatActivity implements imagenDialo
         });
 
 
-        ImageView addComentario = (ImageView) findViewById(R.id.nuevoComentario);
+        addComentario = (ImageView) findViewById(R.id.nuevoComentario);
         addComentario.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -126,6 +146,7 @@ public class VistaEdicionReceta extends AppCompatActivity implements imagenDialo
         });
 
         rv = (RecyclerView) findViewById(R.id.listaComentarios);
+
     }
 
     private void asignarValoresReceta() {

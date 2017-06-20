@@ -54,7 +54,7 @@
 
 
             <ImageView
-                android:id="@+id/imageView2"
+                android:id="@+id/LikeIv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="20dp"
@@ -70,7 +70,7 @@
                 android:textSize="18sp" />
 
             <ImageView
-                android:id="@+id/imageView3"
+                android:id="@+id/dislikeIv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
@@ -103,7 +103,7 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/textView3"
+                android:id="@+id/textoComentariosEditing"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"

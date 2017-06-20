@@ -102,7 +102,11 @@ public class VistaReceta extends AppCompatActivity implements View.OnClickListen
     private  void asignarValoresReceta() {
         tituloTv.setText(receta.getTitulo());
         descripcionTv.setText(receta.getDescripcion());
-        autorTv.setText(receta.getUsuario().getNombre());
+
+        if (receta.getUsuario().getNombre() != null)
+            autorTv.setText(receta.getUsuario().getNombre());
+        else
+            autorTv.setText("Anonymous");
         Bitmap bmp = BitmapFactory.decodeFile(receta.getImagen());
 
         if (bmp != null) {

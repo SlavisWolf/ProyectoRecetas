@@ -50,7 +50,10 @@ public class AdaptadorComentarios extends RecyclerView.Adapter<AdaptadorComentar
             if (comentario.getUsuario().getId()  == AplicacionRecetas.ID_CURRENT_USER)
                 holder.getAutorComentario().setText("You");
             else
-                holder.getAutorComentario().setText(comentario.getUsuario().getNombre() );
+                if (comentario.getUsuario().getNombre() != null)
+                    holder.getAutorComentario().setText(comentario.getUsuario().getNombre() );
+                else
+                    holder.getAutorComentario().setText("Anonymous");
     }
 
     @Override

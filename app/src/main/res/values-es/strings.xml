@@ -1,0 +1,86 @@
+<resources>
+    <string name="app_name">Mum´s Recipes</string>
+
+    <string name="navigation_drawer_open">Abrir menu de navegación</string>
+    <string name="navigation_drawer_close">Cerrar menu de navegación</string>
+
+    <string name="action_settings">Ajustes</string>
+
+    <!-- LOGIN -->
+
+    <string name="login">Login</string>
+    <string name="mail">E-mail</string>
+    <string name="password">Contraseña</string>
+    <string name="haveNotAccount">¿aun no tienes cuenta? Registrate aquí!</string>
+
+    <string name="buttonlogin">Registro</string>
+
+    <string name="noMail">No has escrito un e-mail</string>
+    <string name="noPass">No has escrito contraseña</string>
+    <string name="userDontExist">El e-mail o contraseña estan mal</string>
+    <string name="rememberPass">Recordar contraseña?</string>
+
+    <!-- SIGN UP -->
+
+    <string name="signIn">Registro</string>
+    <string name="phone">Telefono</string>
+    <string name="name">Nombre</string>
+    <string name="send">Enviar</string>
+    <string name="returnLogin">Volver al login</string>
+    <string name="mailExits">Ya existe una cuenta con ese e-mail</string>
+
+    <!-- NAVIGATION-->
+
+    <string name="navProfile">Ver Perfil</string>
+    <string name="navOut">Desconectarse</string>
+    <string name="navAccount">Tu perfil</string>
+    <string name="ownRecipes">Tus Recetas</string>
+    <string name="otherRecipes">Recetas de otros</string>
+
+    <!-- Profile-->
+
+    <string name="profileNewPass">Nueva contraseña</string>
+    <string name="profileCurrentPass">Tu contraseña</string>
+    <string name="profileTextView">Escribir tu contraseña es necesario para guardar los cambios</string>
+    <string name="profileSaveChanges">Guardar Cambios</string>
+    <string name="titleProfile">Perfil de</string>
+
+    <string name="mailUsed">Ese -email ya es usado por otro usuario</string>
+    <string name="passRequired">Escribe tu contraseña para guardar los cambios</string>
+
+    <!-- dialogoImagenes -->
+
+    <string name="tituloDialogoImagenes">Elegir imagen</string>
+    <string name="camera">Camara</string>
+    <string name="galery">Galería</string>
+    <string name="cancel">Cancelar</string>
+
+    <!-- Recetas -->
+    <string name="opinionLabel">¿Te gusta esta receta?</string>
+    <string name="title">Título</string>
+    <string name="description">Descripción</string>
+    <string name="save">Guardar</string>
+
+
+    <!--EdicionReceta-->
+
+    <string name="isRequired">es obligatorio</string>
+    <string name="image">Imagen</string>
+
+    <!-- Receta  -->
+    <string name="likeRecipe">¿Te gusta esta receta?</string>
+    <string name="comments">Comentarios:</string>
+
+    <!--Comments -->
+
+    <string name="tituloDialogoComentarios">Nuevo Comentario</string>
+    <string name="hintDialogoComentarios">Escribe aquí tu comentario.</string>
+    <string name="comment">Comentar</string>
+
+    <string name="acept">Aceptar</string>
+
+    <!-- Dialogo borrar-->
+
+    <string name="tituloBorrarReceta">Borrar receta</string>
+    <string name="textoBorrarReceta">¿quieres borrar esta receta?</string>
+</resources>

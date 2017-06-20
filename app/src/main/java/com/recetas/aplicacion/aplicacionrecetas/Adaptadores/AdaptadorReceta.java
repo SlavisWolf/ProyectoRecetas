@@ -56,11 +56,14 @@ public class AdaptadorReceta extends RecyclerView.Adapter<AdaptadorReceta.ViewHo
 
 
         if (usuario.getId() == AplicacionRecetas.ID_CURRENT_USER) {
-            holder.getAutorReceta().setText("Me");
+            holder.getAutorReceta().setText("You");
         }
         else {
             if (usuario.getNombre() != null) {
                 holder.getAutorReceta().setText(usuario.getNombre() );
+            }
+            else {
+                holder.getAutorReceta().setText("Anonymous");
             }
         }
 
